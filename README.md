@@ -86,6 +86,8 @@ python generate_embeddings.py
 
 Each embedding is L2-normalized and saved to `.npy` files under `/cache`.
 
+You can download the embeddings ( here https://drive.google.com/file/d/1w-jraRtZ8c8R0Q5AoWtjtxBFXuwYU-an/view?usp=sharing ). Once downloaded, extract the contents into a folder named cache in the same directory as app.py
+
 ---
 
 ## How Search Works
