@@ -2,26 +2,12 @@
 
 This project implements a product similarity search microservice using text, numeric, and image embeddings in multimodal similarity. It exposes a FastAPI endpoint that returns similar products based on a given product ID.
 
-## Folder Structure
+## Download Embeddings
+1. You can download the embeddings ( here https://drive.google.com/file/d/1w-jraRtZ8c8R0Q5AoWtjtxBFXuwYU-an/view?usp=sharing ).
+2. Once downloaded, extract the contents into a folder named cache in the same directory as app.py
 
-```
-product-similarity-assignment/
-├── app.py                      # FastAPI microservice to serve similarity search
-├── generate_embeddings.py      # Script to generate and save embeddings
-├── requirements.txt            # For running the FastAPI app
-├── requirements-embed.txt      # For running the embedding generation script
-├── Dockerfile                  # Docker config for the API
-├── cache/                      # Cached data and models
-│   ├── text_embeddings.npy
-│   ├── numeric_matrix.npy
-│   ├── image_embeddings.npy
-│   ├── numeric_scaler.pkl
-│   ├── faiss_index.idx
-│   └── id_map.json
-```
 
----
-
+If you instead want to compute the embeddings again, you can follow the steps [here](#how-embeddings-are-computed)
 ## How to Run the FastAPI App
 
 ### Option 1: Run Locally with Python
@@ -86,7 +72,25 @@ python generate_embeddings.py
 
 Each embedding is L2-normalized and saved to `.npy` files under `/cache`.
 
-You can download the embeddings ( here https://drive.google.com/file/d/1w-jraRtZ8c8R0Q5AoWtjtxBFXuwYU-an/view?usp=sharing ). Once downloaded, extract the contents into a folder named cache in the same directory as app.py
+---
+
+## Folder Structure
+
+```
+product-similarity-assignment/
+├── app.py                      # FastAPI microservice to serve similarity search
+├── generate_embeddings.py      # Script to generate and save embeddings
+├── requirements.txt            # For running the FastAPI app
+├── requirements-embed.txt      # For running the embedding generation script
+├── Dockerfile                  # Docker config for the API
+├── cache/                      # Cached data and models
+│   ├── text_embeddings.npy
+│   ├── numeric_matrix.npy
+│   ├── image_embeddings.npy
+│   ├── numeric_scaler.pkl
+│   ├── faiss_index.idx
+│   └── id_map.json
+```
 
 ---
 
