@@ -65,6 +65,10 @@ product-similarity-assignment/
    docker run -p 8000:8000 similarity-app
    ```
 
+3. Test it at: [http://localhost:8000/find_similar_products?product_id=YOUR_ID&num_similar=5](http://localhost:8000/find_similar_products?product_id=YOUR_ID&num_similar=5)
+
+    With sample product id here -> http://127.0.0.1:8000/find_similar_products?product_id=a7cf70174a0011640d5a39fcff067612&num_similar=5
+
 ---
 
 ## How Embeddings Are Computed
