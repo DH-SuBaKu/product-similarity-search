@@ -77,11 +77,13 @@ if not os.path.exists(image_embedding_path):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
-    # Load Resnet
 
+    # Load ResNet and remove final classification layer to get embeddings
     resnet = models.resnet50(pretrained=True)
+    resnet = torch.nn.Sequential(*list(resnet.children())[:-1])  # Remove final fc layer
     resnet = resnet.to(device)
     resnet.eval()
+
 
     # Pull images and get embedding
 
@@ -92,13 +94,15 @@ if not os.path.exists(image_embedding_path):
                 raise Exception(f"Status code: {response.status_code}")
             img = Image.open(BytesIO(response.content)).convert('RGB')
             img = transform(img).unsqueeze(0).to(device)
-
+    
             with torch.no_grad():
-                embedding = resnet(img)
-            return embedding.squeeze().cpu().numpy()
+                embedding = resnet(img).squeeze()  # [2048, 1, 1]
+                embedding = embedding.view(-1)     # [2048]
+            return embedding.cpu().numpy()
         except Exception as e:
             print(f"[WARN] Failed to process image ({image_url}): {e}")
-            return np.zeros(1000)  # 1000-dim FALLBACK
+            return np.zeros(2048)  
+
 
     print("Encoding image embeddings ----------------------")
     image_embeddings = []
@@ -107,7 +111,7 @@ if not os.path.exists(image_embedding_path):
 
     for idx, row in tqdm(df.iterrows(), total=len(df), desc="Processing Images"):
         image_url = row.get('medium', '')
-        embedding = get_image_embedding(image_url) if image_url else np.zeros(1000) # 1000-dim FALLBACK
+        embedding = get_image_embedding(image_url) if image_url else np.zeros(2048) # 2048-dim FALLBACK
         image_embeddings.append(embedding)
 
     image_embeddings = normalize(np.array(image_embeddings), norm='l2')
